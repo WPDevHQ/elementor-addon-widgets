@@ -21,6 +21,8 @@ Initial version contains 6 widgets - more to come.
 - 4: WooCommerce Featured Products   
 - 5: WooCommerce On Sale Products   
 - 6: WooComemrce Popular Products
+
+- 7: New: EAW: Elementor Recent Posts
 	
 ## Themes ##
 Minimal support is included for almost any theme therefore leaving most of the desing to be carried out in the themes themselves.   
@@ -50,6 +52,9 @@ See this [issue #495](https://github.com/pojome/elementor/issues/495) for curren
 
 
 ## Changelog ##
+
+### 1.0.1 ###
+* New: Recent Posts Widget
 
 ### 1.0.0 ###
 * Initial release.

@@ -63,19 +63,23 @@
 	     * @return 	void
 	     */
 	    public static function eaw_addon_woo_widgets() {	        
-		    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/products-categories.php' );
-			include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/recent-products.php' );
-			include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/featured-products.php' );
-			include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/popular-products.php' );
-			include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/sale-products.php' );
-			include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/best-products.php' );
+		    if ( is_woocommerce_activated() ) { // Lets not do anything unless WooCommerce is active!
+			    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/products-categories.php' );
+			    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/recent-products.php' );
+			    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/featured-products.php' );
+			    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/popular-products.php' );
+			    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/sale-products.php' );
+			    include_once( plugin_dir_path( __FILE__ ) . 'widgets/woo/best-products.php' );
 			
-			register_widget( 'Woo_Product_Categories' );
-			register_widget( 'Woo_Recent_Products' );
-			register_widget( 'Woo_Featured_Products' );
-			register_widget( 'Woo_Popular_Products' );
-			register_widget( 'Woo_Sale_Products' );
-			register_widget( 'Woo_Best_Products' );
+			    register_widget( 'Woo_Product_Categories' );
+			    register_widget( 'Woo_Recent_Products' );
+			    register_widget( 'Woo_Featured_Products' );
+			    register_widget( 'Woo_Popular_Products' );
+			    register_widget( 'Woo_Sale_Products' );
+			    register_widget( 'Woo_Best_Products' );
+			}
+			include_once( plugin_dir_path( __FILE__ ) . 'widgets/wp/eaw-posts-widget.php');
+			register_widget( 'EAW_Recent_Posts' );
 	    }
 		
 		/**

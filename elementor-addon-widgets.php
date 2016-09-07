@@ -30,6 +30,17 @@ define( 'EA_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 require_once( EA_PATH . 'eaw-class.php' );
 
 /**
+ * Query WooCommerce activation
+ */
+if ( ! function_exists( 'is_woocommerce_activated' ) ) {
+
+    function is_woocommerce_activated() {
+	    return class_exists( 'woocommerce' ) ? true : false;
+    }
+
+}
+
+/**
  * Call a shortcode function by tag name.
  *
  * @since  1.0.0
