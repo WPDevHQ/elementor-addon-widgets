@@ -4,11 +4,11 @@
  * Plugin Name: Elementor Addon Widgets
  * Plugin URI: http://www.wpdevhq.com/plugins/elementor-addon-widgets
  * Description: A helper plugin for users of Elementor Pagebuilder.
- * Version: 1.0.0
+ * Version: 1.0.2
  * Author: WPDevHQ
  * Author URI: http://www.wpdevhq.com/
  * Requires at least:   4.4
- * Tested up to:        4.6
+ * Tested up to:        4.6.1
  */
 
 /* Do not access this file directly */

@@ -5,17 +5,17 @@
  * @package Elementor Addon Widgets
  */
 
-class EAW_Recent_Posts extends WP_Widget {
+class EAW_Recent_Posts_Plus extends WP_Widget {
 
 	public function __construct() {
 		$widget_ops = array( 
-		    'classname' => 'widget_recent_posts', 
+		    'classname' => 'widget_recent_posts_plus', 
 			'description' => __( 'Recent posts with featured image - ideal for use with Elementor Page Builder plugin', 'eaw'),
             'customize_selective_refresh' => true,
 		);
 		
-		parent::__construct('eaw-recent-posts', __('EAW: Elementor Recent Posts', 'eaw'), $widget_ops);
-		$this->alt_option_name = 'widget_recent_entries';
+		parent::__construct('eaw-recent-posts-plus', __('EAW: Elementor Posts By Category', 'eaw'), $widget_ops);
+		$this->alt_option_name = 'widget_recent_entries_plus';
 
 		add_action( 'save_post', array($this, 'flush_widget_cache') );
 		add_action( 'deleted_post', array($this, 'flush_widget_cache') );
@@ -29,7 +29,7 @@ class EAW_Recent_Posts extends WP_Widget {
 	public function widget( $args, $instance ) {
 		$cache = array();
 		if ( ! $this->is_preview() ) {
-			$cache = wp_cache_get( 'widget_recent_posts', 'widget' );
+			$cache = wp_cache_get( 'widget_recent_posts_plus', 'widget' );
 		}
 
 		if ( ! is_array( $cache ) ) {
@@ -53,14 +53,18 @@ class EAW_Recent_Posts extends WP_Widget {
 		$number = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 3;
 		if ( ! $number )
 			$number = 3;
+		
+		$category  = isset( $instance['category'] ) ? $instance['category'] : '';
+		
 		$show_excerpt = isset( $instance['show_excerpt'] ) ? $instance['show_excerpt'] : false;
 		$excerptcount = ( ! empty( $instance['excerptcount'] ) ) ? absint( $instance['excerptcount'] ) : 20;
 		
 		if ( '' == $excerptcount || '0' == $excerptcount )
-			$excerptcount = 20;		
+			$excerptcount = 20;        
 		
-		$eawp = new WP_Query( apply_filters( 'eaw_widget_posts_args', array(
+		$eawp = new WP_Query( apply_filters( 'eaw_widget_posts_plus_args', array(
 			'posts_per_page'      => $number,
+			'cat'                 => $category,
 			'no_found_rows'       => true,
 			'post_status'         => 'publish',
 			'ignore_sticky_posts' => true
@@ -95,7 +99,7 @@ class EAW_Recent_Posts extends WP_Widget {
 
 		if ( ! $this->is_preview() ) {
 			$cache[ $args['widget_id'] ] = ob_get_flush();
-			wp_cache_set( 'widget_recent_posts', $cache, 'widget' );
+			wp_cache_set( 'widget_recent_posts_plus', $cache, 'widget' );
 		} else {
 			ob_end_flush();
 		}
@@ -105,13 +109,14 @@ class EAW_Recent_Posts extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['number'] = (int) $new_instance['number'];
+		$instance['category']  = wp_strip_all_tags( $new_instance['category'] );
 		$instance['excerptcount'] = (int) ( $new_instance['excerptcount'] );
 		$instance['show_excerpt'] = isset( $new_instance['show_excerpt'] ) ? (bool) $new_instance['show_excerpt'] : false;
 		$this->flush_widget_cache();
 
 		$alloptions = wp_cache_get( 'alloptions', 'options' );
-		if ( isset($alloptions['widget_recent_entries']) )
-			delete_option('widget_recent_entries');
+		if ( isset($alloptions['widget_recent_entries_plus']) )
+			delete_option('widget_recent_entries_plus');
 
 		return $instance;
 	}
@@ -120,7 +125,7 @@ class EAW_Recent_Posts extends WP_Widget {
 	 * @access public
 	 */
 	public function flush_widget_cache() {
-		wp_cache_delete('widget_recent_posts', 'widget');
+		wp_cache_delete('widget_recent_posts_plus', 'widget');
 	}
 
 	/**
@@ -131,6 +136,7 @@ class EAW_Recent_Posts extends WP_Widget {
 		$number        = isset( $instance['number'] ) ? absint( $instance['number'] ) : 3;
 		$excerptcount  = isset( $instance['excerptcount '] ) ? absint( $instance['excerptcount '] ) : 20;
 		$show_excerpt  = isset( $instance['show_excerpt'] ) ? (bool) $instance['show_excerpt'] : false;
+		$category      = isset( $instance['category'] ) ? $instance['category'] : '';
 ?>
 		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'eaw' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" /></p>
@@ -138,6 +144,26 @@ class EAW_Recent_Posts extends WP_Widget {
 		<p><label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of posts to show:', 'eaw'  ); ?></label>
 		<input id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo $number; ?>" size="3" /></p>
 
+		<p>
+			<label for="rpjc_widget_cat_recent_posts_category"><?php _e( 'Category' ); ?>:</label>				
+			
+			<?php
+
+			wp_dropdown_categories( array(
+
+				'orderby'    => 'title',
+				'hide_empty' => false,
+				'name'       => $this->get_field_name( 'category' ),
+				'id'         => 'rpjc_widget_cat_recent_posts_category',
+				'class'      => 'widefat',
+				'selected'   => $category
+
+			) );
+
+			?>
+
+		</p>
+		
 		<p><input class="checkbox" type="checkbox" <?php checked( $show_excerpt ); ?> id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>" />
 		<label for="<?php echo $this->get_field_id( 'show_dexcerpt' ); ?>"><?php _e( 'Display post excerpt?', 'eaw'  ); ?></label></p>
 		

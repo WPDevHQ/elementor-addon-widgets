@@ -80,6 +80,9 @@
 			}
 			include_once( plugin_dir_path( __FILE__ ) . 'widgets/wp/eaw-posts-widget.php');
 			register_widget( 'EAW_Recent_Posts' );
+			
+			include_once( plugin_dir_path( __FILE__ ) . 'widgets/wp/eaw-posts-widget-plus.php');
+			register_widget( 'EAW_Recent_Posts_Plus' );
 	    }
 		
 		/**

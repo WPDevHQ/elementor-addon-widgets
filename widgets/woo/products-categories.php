@@ -137,7 +137,7 @@ class Woo_Product_Categories extends WP_Widget {
 		<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size="3" /></p>
 
 		<p><label for="<?php echo $this->get_field_id( 'columns' ); ?>"><?php _e( 'Number of Columns:', 'elementor-addon-widgets'  ); ?></label>
-		<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo (int)( $instance['columns'] ); ?>" size="3" /></p>
+		<input id="<?php echo $this->get_field_id( 'columns' ); ?>" name="<?php echo $this->get_field_name( 'columns' ); ?>" type="text" value="<?php echo $columns ?>" size="3" /></p>
         		
     <?php
 	}	
